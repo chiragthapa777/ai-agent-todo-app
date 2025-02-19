@@ -625,3 +625,115 @@ messages [
 ]
 AI ANSWER: Your todos have been deleted successfully. The tasks for visiting the temple with ids 4 and 9 have been removed.
 ```
+
+
+```
+User : give me all todo
+messages [
+  {
+    role: 'system',
+    content: '\n' +
+      '\n' +
+      '    You are an AI TODO list assistant with start, plan, get_context, action, observation and output state.\n' +
+      '    wait for the user prompt and first plan using the available tools.\n' +
+      '    after planning, take the action with appropriate tools and wait for the observation based on the action.\n' +
+      '    once you get the observation, return the ai response based on start prompt and observation.\n' +
+      '    \n' +
+      '    You are an AI TODO List assistant. You can manage tasks by adding, viewing, updating, and deleting tasks.\n' +
+      '    You must strictly follow the json format for the Output.\n' +
+      '\n' +
+      '    Todo DB Schema:\n' +
+      '    id : integer\n' +
+      '    todo : string\n' +
+      '    createdAt : timestamp\n' +
+      '    updatedAt : timestamp\n' +
+      '\n' +
+      '    Available Tools:\n' +
+      '    - getAllTodos(): Returns all the todos from the Database.\n' +
+      '    - createTodo(): Creates a new todo in the Database and returns the id of created todo.\n' +
+      '    - getTodoById(id): Returns a todo by its ID.\n' +
+      '    - deleteTodoById(id): Deletes a todo by its ID.\n' +
+      '    - searchTodo(searchString): Searches for all this todos matching this searchString query using ilike operator.\n' +
+      '\n' +
+      '    Example:\n' +
+      '    start\n' +
+      '    {"type":"user","user":"add a task for shopping shoe"}\n' +
+      '    {"type":"plan","plan":"i will create a new todo using createTodo tool"}\n' +
+      '    {"type":"action","tool":"createTodo",input:"buy a new shoe"}\n' +
+      '    {"type":"observation","observation":"2"}\n' +
+      '    {"type":"output","output":"Your todo has been added successfully with id 2"}\n' +
+      '\n' +
+      '\n' +
+      '    start\n' +
+      '    {"type":"user","user":"add a task for shopping"}\n' +
+      '    {"type":"plan","plan":"i will try to get more context what things user wants to shop"}\n' +
+      '    {"type":"get_context","get_context":"What things you want to shop?"}\n' +
+      '    {"type":"user","user":"i want a bag for school, a new shoe and a t-shirt"}\n' +
+      '    {"type":"plan","plan":"i have enough context now, i will create a new todo using createTodo tool"}\n' +
+      '    {"type":"plan","plan":"i will create a new todo using createTodo tool"}\n' +
+      '    {"type":"action","tool":"createTodo",input:"buy bag for school, a new shoe and a t-shirt"}\n' +
+      '    {"type":"observation","observation":"2"}\n' +
+      '    {"type":"output","output":"Your todo has been added successfully with id 2"}\n' +
+      '\n' +
+      '    start\n' +
+      '    {"type":"user","user":"add a task for shopping"}\n' +
+      '    {"type":"plan","plan":"i will try to get more context what things user wants to shop"}\n' +
+      '    {"type":"get_context","get_context":"What things you want to shop?"}\n' +
+      '    {"type":"user","user":"i want to shop grocery items"}\n' +
+      `    {"type":"plan","plan":"i still don't have enough context, i will ask again"}\n` +
+      '    {"type":"get_context","get_context":"What grocery items you want to shop?"}\n' +
+      '    {"type":"user","user":"i want to but milk and bread"}\n' +
+      '    {"type":"plan","plan":"i have enough context now, i will create a new todo using createTodo tool"}\n' +
+      '    {"type":"plan","plan":"i will create a new todo using createTodo tool"}\n' +
+      '    {"type":"action","tool":"createTodo",input:"buy milk and bread"}\n' +
+      '    {"type":"observation","observation":"2"}\n' +
+      '    {"type":"output","output":"Your todo has been added successfully with id 2"}\n' +
+      '\n' +
+      '\n' +
+      '    start\n' +
+      '    {"type":"user","user":"do i have anything related to shopping"}\n' +
+      '    {"type":"plan","plan":"i will search todo using searchTodo tool with searchString as shopping"}\n' +
+      '    {"type":"action","tool":"searchTodo",input:"shopping"}\n' +
+      `    {"type":"observation","observation":"[ { id: 8, todo: 'go shopping for milk and bread' },{ id: 9, todo: 'go shopping for pen, books and pencils' } ]"}\n` +
+      '    {"type":"output","output":"you have two todo related to shopping. 1. go shopping for milk and bread 2. go shopping for pen, books and pencils"}\n' +
+      '\n' +
+      '    start\n' +
+      '    {"type":"user","user":"i am done with shopping for milk and bread"}\n' +
+      '    {"type":"plan","plan":"so you is telling me the todo is done. i will search todo using searchTodo tool with searchString as shopping"}\n' +
+      '    {"type":"action","tool":"searchTodo",input:"shopping"}\n' +
+      `    {"type":"observation","observation":"[ { id: 8, todo: 'go shopping for milk and bread' },{ id: 9, todo: 'go shopping for pen, books and pencils' } ]"}\n` +
+      '    {"type":"get_context","get_context":"should i remove the todo for shopping milk and bread?"}\n' +
+      '    {"type":"user","user":"yes, remove the todo for shopping milk and bread"}\n' +
+      '    {"type":"plan","plan":"i will delete the todo using deleteTodoById tool with id 8"}\n' +
+      '    {"type":"action","tool":"deleteTodoById",input:8}\n' +
+      '    {"type":"observation","observation":"1"}\n' +
+      '    {"type":"output","output":"Your todo has been deleted successfully with id 8"}\n' +
+      '\n'
+  },
+  {
+    role: 'user',
+    content: '{"type":"user","user":"give me all todo"}'
+  },
+  {
+    role: 'assistant',
+    content: '{"type":"plan","plan":"i will get all the todos using getAllTodos tool"}'
+  },
+  {
+    role: 'assistant',
+    content: '{"type":"action","tool":"getAllTodos","input":""}'
+  },
+  {
+    role: 'assistant',
+    content: '{"type":"observation","observation":[{"id":3,"todo":"new todo","createdAt":"2025-02-19T03:52:53.003Z","updatedAt":"2025-02-19T03:52:52.984Z"},{"id":5,"todo":"read a book","createdAt":"2025-02-19T03:57:15.453Z","updatedAt":"2025-02-19T03:57:15.432Z"},{"id":6,"todo":"read a book","createdAt":"2025-02-19T03:59:44.457Z","updatedAt":"2025-02-19T03:59:44.427Z"},{"id":7,"todo":"read blogs","createdAt":"2025-02-19T04:02:25.483Z","updatedAt":"2025-02-19T04:02:25.460Z"}]}'
+  },
+  {
+    role: 'assistant',
+    content: '{"type":"output","output":"Here are all your todos:\\n1. new todo (id: 3)\\n2. read a book (id: 5)\\n3. read a book (id: 6)\\n4. read blogs (id: 7)"}'
+  }
+]
+AI ANSWER: Here are all your todos:
+1. new todo (id: 3)
+2. read a book (id: 5)
+3. read a book (id: 6)
+4. read blogs (id: 7)
+```
